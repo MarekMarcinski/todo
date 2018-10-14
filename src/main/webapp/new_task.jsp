@@ -12,6 +12,23 @@
 
         <jsp:include page="partial/nav-bar.jsp"/>
 
+        <form action="index.jsp" method="POST">
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" class="form-control"
+                          name="description" id="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="priority">Ważność</label>
+                <select class="form-control" id="priority">
+                    <option name="IMPORTANT">Ważne</option>
+                    <option name="MODERATELY_IMPORTANT">Średnio ważne</option>
+                    <option name="NOT_IMPORTANT">Nieważne</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
     </div>
 
     <script src="webjars/jquery/3.3.1-1/jquery.min.js"></script>
