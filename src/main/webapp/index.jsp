@@ -1,3 +1,8 @@
+<%@ page import="org.marcinski.todo.model.Task" %>
+<%@ page import="org.marcinski.todo.model.TaskPriority" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="java.util.Base64" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,6 +16,26 @@
     <div class="container">
 
         <jsp:include page="partial/nav-bar.jsp"/>
+
+        <%
+            String description = request.getParameter("description");
+            TaskPriority priority = TaskPriority.IMPORTANT;
+            if (description !=null && !description.isEmpty() && priority != null){
+
+                Task task = new Task();
+                task.setDescription(description);
+                task.setDone(false);
+                task.setPriority(priority);
+                task.setAddingDateTime(LocalDateTime.now());
+
+                Gson gson = new Gson();
+                String taskString = gson.toJson(task);
+                String codedTask = Base64.getEncoder().encodeToString(taskString.getBytes());
+                Cookie taskCookie = new Cookie("task", codedTask);
+                response.addCookie(taskCookie);
+            }
+
+        %>
 
     </div>
 
