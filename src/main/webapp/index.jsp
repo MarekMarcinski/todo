@@ -19,20 +19,34 @@
 
         <%
             String description = request.getParameter("description");
-            TaskPriority priority = TaskPriority.IMPORTANT;
-            if (description !=null && !description.isEmpty() && priority != null){
+            String priorityString = request.getParameter("priority");
+            if (description !=null && !description.isEmpty() && priorityString != null){
 
+                TaskPriority priority = TaskPriority.valueOf(priorityString);
                 Task task = new Task();
                 task.setDescription(description);
-                task.setDone(false);
                 task.setPriority(priority);
-                task.setAddingDateTime(LocalDateTime.now());
 
                 Gson gson = new Gson();
                 String taskString = gson.toJson(task);
                 String codedTask = Base64.getEncoder().encodeToString(taskString.getBytes());
-                Cookie taskCookie = new Cookie("task", codedTask);
+                Cookie taskCookie = new Cookie("task" + task.getUuid(), codedTask);
                 response.addCookie(taskCookie);
+            }
+
+        %>
+
+        <%
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                String cookieFirstFourLetters = cookieName.substring(0, 4);
+                if (cookieFirstFourLetters.equals("task")){
+                    String decoded = new String(Base64.getDecoder().decode(cookie.getValue()));
+                    Gson gson = new Gson();
+                    Task task = gson.fromJson(decoded, Task.class);
+                    out.println(task.toString() + "<br>");
+                }
             }
 
         %>
