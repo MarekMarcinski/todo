@@ -20,10 +20,10 @@
             </div>
             <div class="form-group">
                 <label for="priority">Ważność</label>
-                <select class="form-control" id="priority">
-                    <option name="IMPORTANT">Ważne</option>
-                    <option name="MODERATELY_IMPORTANT">Średnio ważne</option>
-                    <option name="NOT_IMPORTANT">Nieważne</option>
+                <select class="form-control" id="priority" name="priority">
+                    <option name="IMPORTANT" value="IMPORTANT">Ważne</option>
+                    <option name="MODERATELY_IMPORTANT" value="MODERATELY_IMPORTANT">Średnio ważne</option>
+                    <option name="NOT_IMPORTANT" value="NOT_IMPORTANT">Nieważne</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
