@@ -1,8 +1,9 @@
 package org.marcinski.todo.controller;
 
 import com.google.gson.Gson;
-import org.marcinski.todo.model.Task;
-import org.marcinski.todo.model.TaskPriority;
+import org.marcinski.todo.dto.TaskDto;
+import org.marcinski.todo.dto.TaskPriority;
+import org.marcinski.todo.service.TaskService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,17 +20,17 @@ import java.util.List;
 @WebServlet("/task")
 public class TaskController extends HttpServlet {
 
+    private TaskService taskService = new TaskService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("id")!= null && !req.getParameter("id").isEmpty()){
-            String cookieId = req.getParameter("id");
-            Cookie cookie = new Cookie("task"+cookieId, "");
-            cookie.setMaxAge(1);
-            resp.addCookie(cookie);
+            Long id = Long.valueOf(req.getParameter("id"));
+            taskService.deleteTask(id);
             resp.sendRedirect("task");
         }else {
-            List<Task> taskList = getTasksFromCookie(req);
-            req.setAttribute("task", taskList);
+            List<TaskDto> taskDtoList = getTasksFromCookie(req);
+            req.setAttribute("task", taskDtoList);
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
             dispatcher.forward(req, resp);
@@ -43,35 +44,32 @@ public class TaskController extends HttpServlet {
         if (description != null && !description.isEmpty() && priorityString != null) {
 
             TaskPriority priority = TaskPriority.valueOf(priorityString);
-            Task task = new Task();
-            task.setDescription(description);
-            task.setPriority(priority);
+            TaskDto taskDto = new TaskDto();
+            taskDto.setDescription(description);
+            taskDto.setPriority(priority);
 
-            Gson gson = new Gson();
-            String taskString = gson.toJson(task);
-            String codedTask = Base64.getEncoder().encodeToString(taskString.getBytes());
-            Cookie taskCookie = new Cookie("task" + task.getId(), codedTask);
-            resp.addCookie(taskCookie);
+            taskService.addTask(taskDto);
             resp.sendRedirect("task");
         }
     }
 
-    private List<Task> getTasksFromCookie(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-        List<Task> taskList = new ArrayList<>();
-        for (Cookie c : cookies) {
-            String first4LetterOfCookieName = c.getName().substring(0,4);
-            if (first4LetterOfCookieName.equals("task")){
-                Task task = getTask(c.getValue());
-                taskList.add(task);
-            }
-        }
-        return taskList;
+    private List<TaskDto> getTasksFromCookie(HttpServletRequest req) {
+//        Cookie[] cookies = req.getCookies();
+//        List<TaskDto> taskDtoList = new ArrayList<>();
+//        for (Cookie c : cookies) {
+//            String first4LetterOfCookieName = c.getName().substring(0,4);
+//            if (first4LetterOfCookieName.equals("task")){
+//                TaskDto taskDto = getTask(c.getValue());
+//                taskDtoList.add(taskDto);
+//            }
+//        }
+//        return taskDtoList;
+        return taskService.getAllTasks();
     }
 
-    private static Task getTask(String decodedCookieValue) {
+    private static TaskDto getTask(String decodedCookieValue) {
         String decoded = new String(Base64.getDecoder().decode(decodedCookieValue));
         Gson gson = new Gson();
-        return gson.fromJson(decoded, Task.class);
+        return gson.fromJson(decoded, TaskDto.class);
     }
 }
