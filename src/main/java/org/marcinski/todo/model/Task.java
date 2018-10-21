@@ -11,14 +11,14 @@ import java.util.UUID;
 @Setter
 @ToString
 public class Task {
-    private UUID uuid;
+    private String id;
     private String description;
     private LocalDateTime addingDateTime;
     private boolean done;
     private TaskPriority priority;
 
     public Task() {
-        this.uuid = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.addingDateTime = LocalDateTime.now();
         this.done = false;
     }
