@@ -12,7 +12,7 @@
 
         <jsp:include page="partial/nav-bar.jsp"/>
 
-        <form action="index.jsp" method="POST">
+        <form action="task" method="POST">
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea type="text" class="form-control"
