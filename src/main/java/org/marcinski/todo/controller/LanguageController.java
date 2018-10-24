@@ -30,13 +30,13 @@ public class LanguageController extends HttpServlet {
             if (langParam !=null && !langParam.isEmpty()) {
                 cookie = new Cookie("language", req.getParameter("lang"));
                 resp.addCookie(cookie);
-                resp.sendRedirect("index.jsp");
+                resp.sendRedirect("task");
             }
         } else {
             String locale = req.getLocale().toLanguageTag();
             cookie = new Cookie("language", locale);
             resp.addCookie(cookie);
-            resp.sendRedirect("index.jsp");
+            resp.sendRedirect("task");
         }
     }
 }

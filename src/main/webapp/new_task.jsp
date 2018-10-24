@@ -1,4 +1,13 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:if test="${empty cookie.language.value}">
+    <fmt:setLocale value="${pageContext.response.locale}"/>
+</c:if>
+<c:if test="${!empty cookie.language.value}">
+    <fmt:setLocale value="${cookie.language.value}"/>
+</c:if>
+<fmt:setBundle basename="labels"/>
+
 <html>
 <head>
     <title>Add a new taskDto</title
@@ -14,19 +23,19 @@
 
         <form action="task" method="POST">
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description"><fmt:message key="desc"/> </label>
                 <textarea type="text" class="form-control"
                           name="description" id="description"></textarea>
             </div>
             <div class="form-group">
-                <label for="priority">Ważność</label>
+                <label for="priority"><fmt:message key="priority"/> </label>
                 <select class="form-control" id="priority" name="priority">
-                    <option name="IMPORTANT" value="IMPORTANT">Ważne</option>
-                    <option name="MODERATELY_IMPORTANT" value="MODERATELY_IMPORTANT">Średnio ważne</option>
-                    <option name="NOT_IMPORTANT" value="NOT_IMPORTANT">Nieważne</option>
+                    <option name="IMPORTANT" value="IMPORTANT"><fmt:message key="important"/> </option>
+                    <option name="MODERATELY_IMPORTANT" value="MODERATELY_IMPORTANT"><fmt:message key="moderatelyImportant"/></option>
+                    <option name="NOT_IMPORTANT" value="NOT_IMPORTANT"><fmt:message key="notImportant"/></option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary"><fmt:message key="button"/> </button>
         </form>
 
     </div>

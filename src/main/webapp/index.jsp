@@ -16,36 +16,33 @@
     <c:if test="${empty cookie.language.value}">
         <fmt:setLocale value="${pageContext.response.locale}"/>
     </c:if>
-    <c:if test="${!empty cookie.language.value}">
-        <fmt:setLocale value="${cookie.language.value}"/>
-    </c:if>
 
     <fmt:setBundle basename="labels"/>
     <jsp:include page="partial/nav-bar.jsp"/>
 
     <div>
-        <table border="1">
+        <table class="table table-striped">
             <thead>
             <tr>
-                <th><fmt:message key="desc"/> </th>
-                <th><fmt:message key="done"/></th>
-                <th><fmt:message key="priority"/></th>
-                <th><fmt:message key="addingTime"/></th>
+                <th scope="col"><fmt:message key="desc"/></th>
+                <th scope="col"><fmt:message key="done"/></th>
+                <th scope="col"><fmt:message key="priority"/></th>
+                <th scope="col"><fmt:message key="addingTime"/></th>
             </tr>
             </thead>
             <tbody>
-
+            <%--@elvariable id="task" type="org.marcinski.todo.dto.TaskDto"--%>
             <c:forEach var="item" items="${task}">
-                    <c:url var="deleteUrl" value="task">
-                        <c:param name="id" value="${item.id}"/>
-                    </c:url>
-                    <tr>
-                        <td>${item.description}</td>
-                        <td>${item.done}</td>
-                        <td>${item.priority}</td>
-                        <td>${item.addingDateTime}</td>
-                        <td><a href="${deleteUrl}"><fmt:message key="remove"/> </a> </td>
-                    </tr>
+                <c:url var="deleteUrl" value="task">
+                    <c:param name="id" value="${item.id}"/>
+                </c:url>
+                <tr>
+                    <td>${item.description}</td>
+                    <td>${item.done}</td>
+                    <td>${item.priority}</td>
+                    <td>${item.addingDateTime}</td>
+                    <td><a href="${deleteUrl}"><fmt:message key="remove"/> </a> </td>
+                </tr>
             </c:forEach>
             </tbody>
         </table>
